@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import '../../widgets/account_details_box.dart';
 
 class AccountSettingsPage extends StatelessWidget {
   const AccountSettingsPage({super.key});
@@ -29,41 +29,41 @@ class AccountSettingsPage extends StatelessWidget {
                 height: 50,
               ),
               // profile details
-              AccountDetailsBox(
+              const AccountDetailsBox(
                 label: 'Name',
                 text: 'Sajid A A',
               ),
-              AccountDetailsBox(
+              const AccountDetailsBox(
                 label: 'Email',
                 text: 'iamsajid.aa@gmail.com',
               ),
-              AccountDetailsBox(
+              const AccountDetailsBox(
                 label: 'Phone',
                 text: '+91 9901312320',
               ),
-              AccountDetailsBox(
+              const AccountDetailsBox(
                 label: 'Location',
                 text: '>',
               ),
-              AccountDetailsBox(
+              const AccountDetailsBox(
                 label: 'Change Password',
                 text: '>',
               ),
               const SizedBox(
                 height: 20,
               ),
-              Divider(
+              const Divider(
                 thickness: 1,
                 color: Colors.grey,
               ),
               const SizedBox(
                 height: 20,
               ),
-              AccountDetailsBox(
+              const AccountDetailsBox(
                 label: 'Account Status',
                 text: 'Approved',
               ),
-              AccountDetailsBox(
+              const AccountDetailsBox(
                 label: 'Joined on',
                 text: '28 May 2024',
               ),
@@ -71,7 +71,7 @@ class AccountSettingsPage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Divider(
+              const Divider(
                 thickness: 1,
                 color: Colors.grey,
               ),
@@ -98,50 +98,6 @@ class AccountSettingsPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class AccountDetailsBox extends StatelessWidget {
-  final String label;
-  final String text;
-  const AccountDetailsBox({
-    super.key,
-    required this.label,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      //   height: 50,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(6),
-        color: Colors.white,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -1,4 +1,7 @@
 import 'package:cte_admin/pages/nav_pages/account_settings_page.dart';
+import 'package:cte_admin/pages/nav_pages/booking_page.dart';
+import 'package:cte_admin/pages/nav_pages/explore_page.dart';
+import 'package:cte_admin/pages/nav_pages/homenav_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   final _auth = AuthService();
 
   // nav
-  int _selectedIndex = 3;
+  int _selectedIndex = 0;
   // nav function
   void navigateBottomBar(int index) {
     setState(() {
@@ -26,15 +29,12 @@ class _HomePageState extends State<HomePage> {
   //
   // pages to display
   final List<Widget> _pages = [
-    Container(
-      color: Colors.white,
-    ),
-    Container(
-      color: Colors.white,
-    ),
-    Container(
-      color: Colors.white,
-    ),
+    // home
+    const HomenavPage(),
+    // explore page
+    const ExplorePage(),
+    // booking page
+    const BookingPage(),
     // account settings
     const AccountSettingsPage(),
   ];
