@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "918807392539",
+    "project_id": "coorg-the-explorer",
+    "storage_bucket": "coorg-the-explorer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918807392539:android:bd481376c7951afc7523be",
+        "android_client_info": {
+          "package_name": "com.shaztech.cte_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918807392539-9tptm96borcan1b85ovolnitargi9mm5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shaztech.cte_admin",
+            "certificate_hash": "33af3d849e37aca89e50259c42361bba45bfa042"
+          }
+        },
+        {
+          "client_id": "918807392539-dtgt3bupbvgmk53mqhi1njgo20tu0g06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuc4ruaD3iGPtrjZgySChAE7udh1n-mlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918807392539-dtgt3bupbvgmk53mqhi1njgo20tu0g06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
