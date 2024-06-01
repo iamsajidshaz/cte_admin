@@ -33,5 +33,5 @@ class BookingPage extends StatelessWidget {
         ),
       ),
     );
-  }
+    }
 }

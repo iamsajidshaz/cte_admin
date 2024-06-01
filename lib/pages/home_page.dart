@@ -1,6 +1,5 @@
 import 'package:cte_admin/pages/nav_pages/account_settings_page.dart';
 import 'package:cte_admin/pages/nav_pages/booking_page.dart';
-import 'package:cte_admin/pages/nav_pages/explore_page.dart';
 import 'package:cte_admin/pages/nav_pages/homenav_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +30,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     // home
     const HomenavPage(),
-    // explore page
-    const ExplorePage(),
+
     // booking page
     const BookingPage(),
     // account settings
@@ -117,10 +115,6 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.home),
               label: 'HOME',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.explore),
-              label: 'Explore',
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.square_list),
