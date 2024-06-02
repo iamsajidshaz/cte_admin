@@ -1,4 +1,7 @@
+import 'package:cte_admin/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../widgets/account_details_box.dart';
 
 class AccountSettingsPage extends StatelessWidget {
@@ -13,41 +16,26 @@ class AccountSettingsPage extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              // profile picture
-              // Center(
-              //   child: Container(
-              //     width: MediaQuery.of(context).size.width / 4,
-              //     height: MediaQuery.of(context).size.width / 4,
-              //     decoration: BoxDecoration(
-              //       color: Colors.green,
-              //       //border: Border.all(color: Colors.green),
-              //       borderRadius: BorderRadius.circular(12),
-              //     ),
-              //   ),
-              // ),
               const SizedBox(
                 height: 50,
               ),
               // profile details
-              const AccountDetailsBox(
+              AccountDetailsBox(
                 label: 'Name',
-                text: 'Sajid A A',
+                text: FirebaseAuth.instance.currentUser!.displayName.toString(),
               ),
-              const AccountDetailsBox(
+              AccountDetailsBox(
                 label: 'Email',
-                text: 'iamsajid.aa@gmail.com',
+                text: FirebaseAuth.instance.currentUser!.email.toString(),
               ),
-              const AccountDetailsBox(
-                label: 'Phone',
-                text: '+91 9901312320',
-              ),
+              const AccountDetailsBox(label: 'Phone', text: "NA"),
               const AccountDetailsBox(
                 label: 'Location',
-                text: '>',
+                text: '📍',
               ),
               const AccountDetailsBox(
                 label: 'Change Password',
-                text: '>',
+                text: '✎',
               ),
               const SizedBox(
                 height: 20,
@@ -61,11 +49,11 @@ class AccountSettingsPage extends StatelessWidget {
               ),
               const AccountDetailsBox(
                 label: 'Account Status',
-                text: 'Approved',
+                text: 'NA',
               ),
               const AccountDetailsBox(
                 label: 'Joined on',
-                text: '28 May 2024',
+                text: 'NA',
               ),
 
               const SizedBox(
@@ -86,7 +74,19 @@ class AccountSettingsPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    // delete user
+                    await DatabaseMethods().deleteUserAccount();
+                    // show message
+                    Fluttertoast.showToast(
+                        msg: "Your account has been deleted successfully",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  },
                   child: const Text(
                     "Delete Account",
                     style: TextStyle(color: Colors.white),

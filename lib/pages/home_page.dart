@@ -1,6 +1,6 @@
 import 'package:cte_admin/pages/nav_pages/account_settings_page.dart';
 import 'package:cte_admin/pages/nav_pages/booking_page.dart';
-import 'package:cte_admin/pages/nav_pages/homenav_page.dart';
+import 'package:cte_admin/pages/nav_pages/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
