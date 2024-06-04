@@ -1,3 +1,4 @@
+import 'package:cte_admin/pages/login_page.dart';
 import 'package:cte_admin/pages/nav_pages/account_settings_page.dart';
 import 'package:cte_admin/pages/nav_pages/booking_page.dart';
 import 'package:cte_admin/pages/nav_pages/home.dart';
@@ -56,7 +57,12 @@ class _HomePageState extends State<HomePage> {
           TextButton(
             onPressed: () async {
               await _auth.signout();
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ),
+              );
             },
             child: Container(
               padding: const EdgeInsets.all(14),

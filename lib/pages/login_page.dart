@@ -294,6 +294,7 @@ class _LoginPageState extends State<LoginPage> {
                               setState(() {
                                 isLoading = false;
                               });
+                              Navigator.pop(context);
                             },
                             icon: const Image(
                               width: 24,

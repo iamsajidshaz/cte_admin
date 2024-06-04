@@ -3,6 +3,7 @@ import 'package:cte_admin/pages/add_new_homestay.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/edit_or_view_homestay.dart';
 import '../services/database.dart';
 
 class SingleHomeStayList extends StatefulWidget {
@@ -64,87 +65,110 @@ class _SingleHomeStayListState extends State<SingleHomeStayList> {
           // if homestay exist
           DocumentSnapshot ds = snapshot.data!;
           Map<String, dynamic> data = ds.data() as Map<String, dynamic>;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                height: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditOrViewHomestay(
+                    listNumber: widget.listNumber,
+                    name: data["Name"],
+                    location: data["Location"],
+                    imageOneUrl: data["image_one"],
+                    imageTwoUrl: data["image_two"],
+                    imageThreeUrl: data["image_three"],
+                    imageFourUrl: data["image_four"],
+                    isWifi: data["fac1"],
+                    isAc: data["fac2"],
+                    isHeater: data["fac3"],
+                    isFood: data["fac4"],
+                    isParking: data["fac5"],
                   ),
-                  color: Colors.grey,
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      data["image_one"],
+                ),
+              ).then((value) => setState(() {}));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
                     ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.home,
-                            size: 12,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            data["Name"],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
+                    color: Colors.grey,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        data["image_one"],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.place,
-                            size: 12,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            data["Location"],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: Colors.grey[200],
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.home,
+                              size: 12,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              data["Name"],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.place,
+                              size: 12,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              data["Location"],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         }
       },
