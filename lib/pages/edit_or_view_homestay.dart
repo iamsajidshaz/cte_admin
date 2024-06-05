@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../services/database.dart';
+import '../widgets/image_upload_success_box.dart';
 
 class EditOrViewHomestay extends StatefulWidget {
   final String listNumber;
@@ -51,10 +53,17 @@ class _EditOrViewHomestayState extends State<EditOrViewHomestay> {
   bool issFood = false;
   bool issParking = false;
 
-  late String imageOne;
-  late String imageTwo;
-  late String imageThree;
-  late String imageFour;
+  String imageOne = "no";
+  String imageTwo = "no";
+  String imageThree = "no";
+  String imageFour = "no";
+
+  late String oldImageOne;
+  late String oldImageTwo;
+  late String oldImageThree;
+  late String oldImageFour;
+
+  List<String> oldImagesList = [];
 
   // upload
   XFile? imageUpOne;
@@ -66,8 +75,20 @@ class _EditOrViewHomestayState extends State<EditOrViewHomestay> {
   @override
   void initState() {
     super.initState();
+    //
     _nameController = TextEditingController(text: widget.name);
     _locationController = TextEditingController(text: widget.location);
+    //
+    oldImageOne = widget.imageOneUrl;
+    oldImageTwo = widget.imageTwoUrl;
+    oldImageThree = widget.imageThreeUrl;
+    oldImageFour = widget.imageFourUrl;
+    oldImagesList.add(oldImageOne);
+    oldImagesList.add(oldImageTwo);
+    oldImagesList.add(oldImageThree);
+    oldImagesList.add(oldImageFour);
+
+    //
     if (widget.isWifi == "true") {
       issWifi = true;
     }
@@ -83,10 +104,6 @@ class _EditOrViewHomestayState extends State<EditOrViewHomestay> {
     if (widget.isParking == "true") {
       issParking = true;
     }
-    imageOne = widget.imageOneUrl;
-    imageTwo = widget.imageTwoUrl;
-    imageThree = widget.imageThreeUrl;
-    imageFour = widget.imageFourUrl;
   }
 
   @override
@@ -154,7 +171,7 @@ class _EditOrViewHomestayState extends State<EditOrViewHomestay> {
                 height: 20,
               ),
               const Text(
-                "Gallery (Click the image to upload new one)",
+                "HomeStay Gallery",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
@@ -163,123 +180,352 @@ class _EditOrViewHomestayState extends State<EditOrViewHomestay> {
               const SizedBox(
                 height: 20,
               ),
-              // 1
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // 1
 
-                  GestureDetector(
-                    onTap: () async {
-                      final pictureOne = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
+              // current gallery
 
-                      if (pictureOne != null) {
-                        imageUpOne = pictureOne;
-                        setState(() {});
-                      }
-
-                      // upload image
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.40,
+              SizedBox(
+                height: 120,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: oldImagesList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.only(right: 10),
+                      width: 150,
                       height: 150,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.grey,
-                      ),
-                      child: imageUpOne == null
-                          ? Image.network(
-                              imageOne,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.file(
-                              File(imageUpOne!.path),
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                  ),
-                  //2
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.40,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          imageTwo,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            oldImagesList[index],
+                          ),
+                          fit: BoxFit.cover,
                         ),
-                        fit: BoxFit.cover,
                       ),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.photo,
-                        color: Colors.white,
+                      child: const Center(
+                        child: Icon(
+                          Icons.photo,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-
               const SizedBox(
-                height: 20,
+                height: 25,
               ),
-              // 3 and 4
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // 3
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.40,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          imageThree,
+// for upload
+              // image 1
+              imageOne == "no"
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Upload new IMAGE ONE",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.photo,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  // 4
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.40,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          imageFour,
+                        GestureDetector(
+                          onTap: () async {
+                            final pictureOne = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+
+                            if (pictureOne != null) {
+                              imageUpOne = pictureOne;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: MediaQuery.of(context).size.width - 20,
+                            height: 250,
+                            child: imageUpOne == null
+                                ? const Center(
+                                    child: Icon(
+                                      CupertinoIcons.camera,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Image.file(
+                                    File(imageUpOne!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
                         ),
-                        fit: BoxFit.cover,
-                      ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        // upload button
+
+                        uploadTask != null
+                            ? buildProgress()
+                            : ElevatedButton(
+                                onPressed: () async {
+                                  // upload task
+                                  final imageStorageRef =
+                                      FirebaseStorage.instance.ref().child(
+                                          "images/homestay/${widget.listNumber}_imageone_${FirebaseAuth.instance.currentUser?.uid}");
+                                  uploadTask = imageStorageRef
+                                      .putFile(File(imageUpOne!.path));
+                                  setState(() {});
+                                  final snapshot = await uploadTask!
+                                      .whenComplete(() => setState(() {}));
+                                  final downloadUrl =
+                                      await snapshot.ref.getDownloadURL();
+                                  setState(() {
+                                    uploadTask = null;
+                                    imageOne = downloadUrl.toString();
+                                    oldImagesList[0] = imageOne;
+                                  });
+                                  // ========= end of upload task
+                                },
+                                child: const Text("Upload"),
+                              )
+                      ],
+                    )
+                  : const ImageUploadedSuccessBox(
+                      num: "1",
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.photo,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+              const SizedBox(
+                height: 15,
               ),
 
-              //
+              // image 2
+              imageTwo == "no"
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Upload new IMAGE TWO",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            final pictureTwo = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+
+                            if (pictureTwo != null) {
+                              imageUpTwo = pictureTwo;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: MediaQuery.of(context).size.width - 20,
+                            height: 250,
+                            child: imageUpTwo == null
+                                ? const Center(
+                                    child: Icon(
+                                      CupertinoIcons.camera,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Image.file(
+                                    File(imageUpTwo!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        // upload button
+
+                        uploadTask != null
+                            ? buildProgress()
+                            : ElevatedButton(
+                                onPressed: () async {
+                                  // upload task
+                                  final imageStorageRef =
+                                      FirebaseStorage.instance.ref().child(
+                                          "images/homestay/${widget.listNumber}_imagetwo_${FirebaseAuth.instance.currentUser?.uid}");
+                                  uploadTask = imageStorageRef
+                                      .putFile(File(imageUpTwo!.path));
+                                  setState(() {});
+                                  final snapshot = await uploadTask!
+                                      .whenComplete(() => setState(() {}));
+                                  final downloadUrl =
+                                      await snapshot.ref.getDownloadURL();
+                                  setState(() {
+                                    uploadTask = null;
+                                    imageTwo = downloadUrl.toString();
+                                    oldImagesList[1] = imageTwo;
+                                  });
+                                  // ========= end of upload task
+                                },
+                                child: const Text("Upload"),
+                              )
+                      ],
+                    )
+                  : const ImageUploadedSuccessBox(
+                      num: "2",
+                    ),
+              const SizedBox(
+                height: 15,
+              ),
+
+              // image 3
+
+              imageThree == "no"
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Upload new IMAGE THREE",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            final pictureThree = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+
+                            if (pictureThree != null) {
+                              imageUpThree = pictureThree;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: MediaQuery.of(context).size.width - 20,
+                            height: 250,
+                            child: imageUpThree == null
+                                ? const Center(
+                                    child: Icon(
+                                      CupertinoIcons.camera,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Image.file(
+                                    File(imageUpThree!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        // upload button
+
+                        uploadTask != null
+                            ? buildProgress()
+                            : ElevatedButton(
+                                onPressed: () async {
+                                  // upload task
+                                  final imageStorageRef =
+                                      FirebaseStorage.instance.ref().child(
+                                          "images/homestay/${widget.listNumber}_imagethree_${FirebaseAuth.instance.currentUser?.uid}");
+                                  uploadTask = imageStorageRef
+                                      .putFile(File(imageUpThree!.path));
+                                  setState(() {});
+                                  final snapshot = await uploadTask!
+                                      .whenComplete(() => setState(() {}));
+                                  final downloadUrl =
+                                      await snapshot.ref.getDownloadURL();
+                                  setState(() {
+                                    uploadTask = null;
+                                    imageThree = downloadUrl.toString();
+                                    oldImagesList[2] = imageThree;
+                                  });
+                                  // ========= end of upload task
+                                },
+                                child: const Text("Upload"),
+                              )
+                      ],
+                    )
+                  : const ImageUploadedSuccessBox(
+                      num: "3",
+                    ),
+              const SizedBox(
+                height: 15,
+              ),
+
+              // image 4
+              imageFour == "no"
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Upload new IMAGE FOUR",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            final pictureFour = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+
+                            if (pictureFour != null) {
+                              imageUpFour = pictureFour;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: MediaQuery.of(context).size.width - 20,
+                            height: 250,
+                            child: imageUpFour == null
+                                ? const Center(
+                                    child: Icon(
+                                      CupertinoIcons.camera,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Image.file(
+                                    File(imageUpFour!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        // upload button
+
+                        uploadTask != null
+                            ? buildProgress()
+                            : ElevatedButton(
+                                onPressed: () async {
+                                  // upload task
+                                  final imageStorageRef =
+                                      FirebaseStorage.instance.ref().child(
+                                          "images/homestay/${widget.listNumber}_imagefour_${FirebaseAuth.instance.currentUser?.uid}");
+                                  uploadTask = imageStorageRef
+                                      .putFile(File(imageUpFour!.path));
+                                  setState(() {});
+                                  final snapshot = await uploadTask!
+                                      .whenComplete(() => setState(() {}));
+                                  final downloadUrl =
+                                      await snapshot.ref.getDownloadURL();
+                                  setState(() {
+                                    uploadTask = null;
+                                    imageFour = downloadUrl.toString();
+                                    oldImagesList[3] = imageFour;
+                                  });
+                                  // ========= end of upload task
+                                },
+                                child: const Text("Upload"),
+                              )
+                      ],
+                    )
+                  : const ImageUploadedSuccessBox(
+                      num: "4",
+                    ),
+
+              // ---------------------------------------------
 
               // facilities
               const SizedBox(
@@ -377,14 +623,35 @@ class _EditOrViewHomestayState extends State<EditOrViewHomestay> {
                     // upload to db
                     String id =
                         "${widget.listNumber}_${FirebaseAuth.instance.currentUser!.uid}";
+                    String ione, itwo, ithree, ifour;
+                    if (imageOne == "no") {
+                      ione = oldImageOne;
+                    } else {
+                      ione = imageOne;
+                    }
+                    if (imageTwo == "no") {
+                      itwo = oldImageTwo;
+                    } else {
+                      itwo = imageTwo;
+                    }
+                    if (imageThree == "no") {
+                      ithree = oldImageThree;
+                    } else {
+                      ithree = imageThree;
+                    }
+                    if (imageFour == "no") {
+                      ifour = oldImageFour;
+                    } else {
+                      ifour = imageFour;
+                    }
                     Map<String, dynamic> homestayUpdateInfoMap = {
                       "ID": id,
                       "Name": _nameController.text,
                       "Location": _locationController.text,
-                      "image_one": imageOne,
-                      "image_two": imageTwo,
-                      "image_three": imageThree,
-                      "image_four": imageFour,
+                      "image_one": ione,
+                      "image_two": itwo,
+                      "image_three": ithree,
+                      "image_four": ifour,
                       "fac1": issWifi.toString(),
                       "fac2": issAc.toString(),
                       "fac3": issHeater.toString(),

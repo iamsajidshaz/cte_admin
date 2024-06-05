@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../services/database.dart';
+import '../widgets/image_upload_success_box.dart';
 
 class AddNewHomestay extends StatefulWidget {
   const AddNewHomestay({
@@ -620,27 +621,6 @@ class _AddNewHomestayState extends State<AddNewHomestay> {
           return const SizedBox.shrink();
         }
       },
-    );
-  }
-}
-
-class ImageUploadedSuccessBox extends StatelessWidget {
-  final String num;
-  const ImageUploadedSuccessBox({
-    super.key,
-    required this.num,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-          height: 50,
-          width: MediaQuery.of(context).size.width - 50,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.green)),
-          child: Center(child: Text("Image $num uploaded successfully"))),
     );
   }
 }
